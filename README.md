@@ -1,6 +1,8 @@
-# Syncing Obsidian & GitHub Wiki
+# Bidirectional Syncing: Obsidian ↔ GitHub Wiki
 
-This repository was made to explore the possibility to use git hooks to maintain a [GitHub Wiki](https://docs.github.com/en/communities/documenting-your-project-with-wikis/about-wikis) using the amazing note-taking, markdown-editing, and second-brain-making app [Obsidian](https://obsidian.md/). 
+This repository provides a complete **bidirectional sync solution** between [Obsidian](https://obsidian.md/) and [GitHub Wiki](https://docs.github.com/en/communities/documenting-your-project-with-wikis/about-wikis). Work seamlessly in Obsidian while automatically maintaining a public GitHub Wiki, with changes flowing both ways!
+
+🆕 **NEW: Full Bidirectional Sync** - Changes made directly in GitHub Wiki now automatically sync back to your Obsidian vault!
 
 This repository has a GitHub Wiki, accessible [here](https://github.com/BjornFJohansson/obsidian_git_experiment/wiki), or by clicking the **Wiki** link at the top of the page.
 
@@ -20,6 +22,31 @@ This is important in Obsidian for how the GUI autocomplete these links
 ### Header Links
 - Obsidian: `[[#Some Header|custom display text]]`
 - GitHub Wiki: `[custom display text](#some-header)`
+
+## 🔄 Bidirectional Sync Features
+
+### Automatic Sync in Both Directions
+1. **Obsidian → GitHub Wiki** (Original functionality)
+   - Edit notes in Obsidian vault
+   - Commit changes on `obsidian` branch
+   - Automatically converts links and pushes to GitHub Wiki
+
+2. **GitHub Wiki → Obsidian** (NEW!)
+   - Edit pages directly in GitHub Wiki
+   - Pull changes or let post-merge hook trigger automatically
+   - Automatically converts links back to Obsidian format
+   - Updates your local `obsidian` branch
+
+### Smart Conflict Prevention
+- Tracks sync state to prevent infinite loops
+- Detects whether changes came from Obsidian or GitHub Wiki
+- Only syncs when external changes are detected
+
+### Easy Setup
+```bash
+# One-command setup for bidirectional sync
+python3 setup-bidirectional-sync.py
+```
 
 ## How The Script Works
 This is a Python script called "post-commit" which must be placed in the .git/hooks folder.
@@ -104,17 +131,60 @@ Header: [custom display text](#some-header)
 
 7. Done!
 
-## How You Can Use It
-Before you do anything, ***back up*** your Obsidian folder. Just create a copy of the Obsidian vault folder if you need to.
-1. Create a GitHub Wiki for your GitHub repo using the **Wiki** tab.
-2. Clone the created wiki, typically in the format (*username*/*repository*.wiki.git). The clone link can also be found on the Wiki page under the sidebar on the right.
-3. Download and move the **.gitignore** file to the new folder.
-4. Download and move the **post-commit** script file into the .git/hooks/ directory within the same folder. You may need to reveal hidden items in whichever file browser or interface you're using.
-6. Rename the "main" branch to "master" if it isn't already.
-7. Create two branches: "ob_to_gh" and "obsidian".
-8. Switch to the "obsidian" branch.
-9. Open **Obsidian** and *open the cloned folder* as a vault. Do not create a new vault.
-10. Do whatever you'd like to in Obsidian. Make new notes, add some links, etc.
-11. Stage and commit the changes (while still in the "obsidian" branch). The script should automatically ultimately merge the changes into "master" and push it to the wiki. It will return to "obsidian" after.
-12. View your changes on GitHub Wiki.
-13. Celebrate! 🎉
+## 🚀 Quick Start with Bidirectional Sync
+
+### Prerequisites
+- Python 3.6+ installed
+- Git configured with your GitHub credentials
+- An existing GitHub repository
+
+### Setup Steps
+
+1. **Create GitHub Wiki**
+   - Go to your GitHub repository
+   - Click the **Wiki** tab and create your first page
+
+2. **Clone the Wiki Repository**
+   ```bash
+   git clone https://github.com/yourusername/yourrepo.wiki.git
+   cd yourrepo.wiki
+   ```
+
+3. **Download Sync Scripts**
+   - Download all files from this repository to your wiki folder
+   - Or clone this repo and copy the files
+
+4. **Run Automated Setup**
+   ```bash
+   python3 setup-bidirectional-sync.py
+   ```
+   
+   This will:
+   - ✅ Create required branches (`obsidian`, `ob_to_gh`, `master`)
+   - ✅ Install git hooks for automatic syncing
+   - ✅ Configure sync state tracking
+   - ✅ Test the setup
+
+5. **Configure Obsidian**
+   ```bash
+   git checkout obsidian
+   ```
+   - Open Obsidian and select "Open folder as vault"
+   - Choose your wiki folder
+   - Start creating notes with Obsidian syntax!
+
+6. **Start Syncing**
+   - **From Obsidian**: Commit changes on `obsidian` branch → automatically syncs to GitHub Wiki
+   - **From GitHub Wiki**: Edit directly in browser → run `git pull origin master` → automatically syncs to Obsidian
+
+### Manual Sync (Optional)
+```bash
+# Sync GitHub Wiki changes to Obsidian manually
+python3 wiki-to-obsidian.py
+
+# Check sync status
+cat .obsidian_sync_state.json
+```
+
+## Legacy Manual Setup
+For manual setup without the automated script, see the original instructions [here](LEGACY-SETUP.md).

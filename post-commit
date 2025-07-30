@@ -191,3 +191,29 @@ if not arg:
                        shell=True,
                        timeout=300,
                        check=True)
+    
+    # Update bidirectional sync state to prevent loops
+    # This tells the wiki-to-obsidian script that this change came from us
+    try:
+        import json
+        from datetime import datetime
+        
+        # Get the current master hash after our push
+        master_hash = subprocess.check_output("git rev-parse master",
+                                            shell=True,
+                                            timeout=300).decode().strip()
+        
+        sync_state = {
+            "last_master_hash": master_hash,
+            "last_sync_time": datetime.now().isoformat(),
+            "sync_source": "obsidian_to_wiki"
+        }
+        
+        with open(".obsidian_sync_state.json", 'w') as f:
+            json.dump(sync_state, f, indent=2)
+            
+        print(f"Updated sync state: {master_hash}")
+        
+    except Exception as e:
+        print(f"Warning: Could not update sync state: {e}")
+        # Don't fail the whole script for this

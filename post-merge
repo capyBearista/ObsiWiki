@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""
+Post-merge Git Hook for Bidirectional Sync
+Automatically triggers wiki-to-obsidian sync when master branch is updated
+"""
+import sys
+import subprocess
+from pathlib import Path
+
+def main():
+    # Get the current branch
+    current_branch = subprocess.check_output("git rev-parse --abbrev-ref HEAD",
+                                           shell=True,
+                                           timeout=300).decode().strip()
+    
+    # Only run on master branch merges
+    if current_branch != "master":
+        print(f"Post-merge hook: Not on master branch (currently on {current_branch})")
+        sys.exit(0)
+    
+    print("Post-merge hook: Detected merge on master branch")
+    
+    # Check if this is a merge from remote (fetch/pull)
+    # Get merge commit info
+    try:
+        merge_info = subprocess.check_output("git log -1 --merges --pretty=format:'%H %s'",
+                                           shell=True,
+                                           timeout=300).decode().strip()
+        
+        if merge_info:
+            print(f"Post-merge hook: Merge detected: {merge_info}")
+        else:
+            print("Post-merge hook: No merge commit found, checking for direct updates...")
+            
+    except subprocess.CalledProcessError:
+        print("Post-merge hook: Could not get merge info, proceeding with sync check...")
+    
+    # Look for the wiki-to-obsidian script
+    script_paths = [
+        Path("wiki-to-obsidian.py"),
+        Path(".git/hooks/wiki-to-obsidian.py"),
+        Path("../wiki-to-obsidian.py")  # In case hook is in different location
+    ]
+    
+    wiki_sync_script = None
+    for script_path in script_paths:
+        if script_path.exists():
+            wiki_sync_script = script_path
+            break
+    
+    if not wiki_sync_script:
+        print("Post-merge hook: wiki-to-obsidian.py script not found, skipping bidirectional sync")
+        print("Expected locations:")
+        for path in script_paths:
+            print(f"  - {path}")
+        sys.exit(0)
+    
+    print(f"Post-merge hook: Found sync script at {wiki_sync_script}")
+    
+    # Run the bidirectional sync
+    try:
+        print("Post-merge hook: Starting bidirectional sync...")
+        result = subprocess.run([sys.executable, str(wiki_sync_script)],
+                              timeout=600,  # 10 minute timeout
+                              capture_output=True,
+                              text=True)
+        
+        if result.returncode == 0:
+            print("Post-merge hook: Bidirectional sync completed successfully")
+            if result.stdout:
+                print("Sync output:")
+                print(result.stdout)
+        else:
+            print(f"Post-merge hook: Bidirectional sync failed with exit code {result.returncode}")
+            if result.stderr:
+                print("Error output:")
+                print(result.stderr)
+            if result.stdout:
+                print("Standard output:")
+                print(result.stdout)
+                
+    except subprocess.TimeoutExpired:
+        print("Post-merge hook: Bidirectional sync timed out after 10 minutes")
+    except Exception as e:
+        print(f"Post-merge hook: Error running bidirectional sync: {e}")
+
+if __name__ == "__main__":
+    main()
