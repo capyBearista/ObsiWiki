@@ -2,9 +2,10 @@
 
 <p align="center">
   <!-- Badges -->
-  <a href="https://obsidian.md" title="Obsidian"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Obsidian/obsidian1.svg" alt="Obsidian" height=28/></a>
-  <a href="" title="Python"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Python/python2.svg" alt="Python" height=28/></a>
-  <a href="" title="Git"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Git/git2.svg" alt="Git" height=28/></a>
+  <a href="https://obsidian.md" title="Obsidian"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Obsidian/obsidian1.svg" alt="Obsidian"/></a>
+  <a href="" title="Python"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Python/python2.svg" alt="Python"/></a>
+  <a href="" title="Git"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Git/git2.svg" alt="Git"/></a>
+  <a href="" title="Markdown"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Markdown/markdown1.svg" alt="Markdown"/></a>
 </p>
 
 # Syncing Obsidian & GitHub Wiki
