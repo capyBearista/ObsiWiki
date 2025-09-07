@@ -1,4 +1,13 @@
-# ![icon](https://github.com/ObsiWiki/ObsiWiki/blob/main/obsiwiki_small.png?raw=true) Syncing Obsidian & GitHub Wiki
+<p align=center><img src="obsiwiki_transparent.png" height=200/></p>
+
+<p align="center">
+  <!-- Badges -->
+  <a href="https://obsidian.md" title="Obsidian"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Obsidian/obsidian1.svg" alt="Obsidian" height=28/></a>
+  <a href="" title="Python"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Python/python2.svg" alt="Python" height=28/></a>
+  <a href="" title="Git"><img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Git/git2.svg" alt="Git" height=28/></a>
+</p>
+
+# Syncing Obsidian & GitHub Wiki
 
 This repository was made to explore the possibility to use git hooks to maintain a [GitHub Wiki](https://docs.github.com/en/communities/documenting-your-project-with-wikis/about-wikis) using the amazing note-taking, markdown-editing, and second-brain-making app [Obsidian](https://obsidian.md/). 
 
